@@ -1,0 +1,35 @@
+{
+  "name": "qa-guru-diploma",
+  "version": "1.0.0",
+  "main": "playwright.config.js",
+  "type": "module",
+  "directories": {
+    "test": "tests"
+  },
+    "scripts": {
+    "test": "npx playwright test",
+    "t:api": "playwright test --grep @api",
+    "t:ui": "playwright test --grep @ui",
+    "t:positive": "playwright test --grep @positive",
+    "t:negative": "playwrignpht test --grep @negative"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benkyousuru0/qa-guru-diploma.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benkyousuru0/qa-guru-diploma/issues"
+  },
+  "homepage": "https://github.com/benkyousuru0/qa-guru-diploma#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.1"
+  },
+  "keywords": [],
+  "description": ""
+}
