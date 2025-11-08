@@ -1,11 +1,9 @@
 import { expect } from "@playwright/test";
 import BasePage from "./BasePage.js";
-import { SORTING } from "../helpers/constants/homePageConstants.js";
 
 const LOCATORS = {
   productCards: ".shelf-item",
   productTitle: ".shelf-item__title",
-  productPrice: ".shelf-item__price .val b",
   addToCartButton: ".shelf-item__buy-btn",
   cartIconQuantity: ".bag__quantity",
   cartItems: ".float-cart__shelf-container .shelf-item",
@@ -15,7 +13,6 @@ const LOCATORS = {
   bagIcon: ".bag",
   floatCartOpen: ".float-cart--open",
   logoLink: ".Navbar_logo__26S5Y",
-  sortSelect: ".sort select",
   loadingSpinner: ".loading-spinner",
   vendorCheckbox: (vendor) => `label:has(input[value="${vendor}"]) span.checkmark`,
 };
@@ -57,59 +54,19 @@ class HomePage extends BasePage {
     await this._click(this.logoLink);
   }
 
-  //фильтры и сортировка
+  //фильтры 
   async toggleVendorFilter(vendor) {
     const checkboxSpan = this.vendorFilters[vendor.toLowerCase()];
     await checkboxSpan.click();
-    await this.page.waitForTimeout(500);
+    await this.page.waitForTimeout(1000); //вынужденное ожидание, так как сайт медленный
   }
 
   async getProductTitle(index) {
     return await this.productCards.nth(index).locator(LOCATORS.productTitle).innerText();
   }
-
-  async sortBy(optionValue) {
-    const countBefore = await this.getProductCount();
-    await this.sortSelect.selectOption(optionValue);
-
-    // Используйте селектор из LOCATORS, а не this.productCards.selector()
-    await this.page.waitForFunction(
-      (selector, firstTitle) => {
-        const firstElement = document.querySelector(selector);
-        if (!firstElement) {return false;}
-        const title = firstElement.querySelector(".shelf-item__title").innerText;
-        return title !== firstTitle;
-      },
-      LOCATORS.productCards,
-      (await this.getProductTitle(0))
-    );
-
-    await this.page.waitForTimeout(200);
-  }
-
+  
   async getProductCount() {
     return await this.productCards.count();
-  }
-
-  async getProductPrice(index) {
-    const priceText = await this.productCards.nth(index).locator(LOCATORS.productPrice).innerText();
-    return parseFloat(priceText);
-  }
-
-  async expectPricesSorted(direction = SORTING.LOWEST_PRICE) {
-    const prices = [];
-    const count = await this.getProductCount();
-    for (let i = 0; i < count; i++) {
-      prices.push(await this.getProductPrice(i));
-    }
-
-    for (let i = 1; i < prices.length; i++) {
-      if (direction === SORTING.LOWEST_PRICE) {
-        expect(prices[i]).toBeGreaterThanOrEqual(prices[i - 1]);
-      } else if (direction === SORTING.HIGHEST_PRICE) {
-        expect(prices[i]).toBeLessThanOrEqual(prices[i - 1]);
-      } 
-    }
   }
 
   //корзина

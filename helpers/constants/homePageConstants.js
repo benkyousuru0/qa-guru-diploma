@@ -11,8 +11,3 @@ export const EXPECTED_PRODUCT_NAMES = {
   google: "pixel",
   oneplus: "oneplus",
 };
-
-export const SORTING = {
-  LOWEST_PRICE: "lowestprice",
-  HIGHEST_PRICE: "highestprice",
-};
