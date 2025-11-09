@@ -6,7 +6,7 @@
   "directories": {
     "test": "tests"
   },
-    "scripts": {
+  "scripts": {
     "test": "npx playwright test",
     "t:api": "playwright test --grep @api",
     "t:ui": "playwright test --grep @ui",
@@ -28,6 +28,7 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
     "eslint": "^9.39.1"
   },
   "keywords": [],

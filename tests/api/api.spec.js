@@ -2,8 +2,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { test, expect } from "@playwright/test";
-import { ApiService, AuthService, ProductsService, OrdersService } from "../../helpers/services/index.js";
+import { faker } from "@faker-js/faker";
 import config from "../../playwright.config.js";
+
+import { ApiService, AuthService, ProductsService, OrdersService } from "../../helpers/services/index.js";
 
 test.describe("API Tests", () => {
   let api, auth, products, orders;
@@ -26,6 +28,15 @@ test.describe("API Tests", () => {
     const { response, body } = await auth.login(process.env.BLOCKED_USER, process.env.PASSWORD);
     expect(response.status()).toBe(422);
     expect(body.errorMessage).toBe("Your account has been locked.");
+  });
+
+  test("Логин под рандомными кредами @api @negative", async () => {
+    const randomEmail = faker.internet.email();
+    const randomPassword = faker.internet.password();
+
+    const { response, body } = await auth.login(randomEmail, randomPassword);
+    expect(response.status()).toBe(422);
+    expect(body.errorMessage).toBe("Invalid Username");
   });
 
   test("Список продуктов @api @positive", async () => {
